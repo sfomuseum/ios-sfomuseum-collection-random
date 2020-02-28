@@ -1,20 +1,33 @@
-//
-//  ViewController.swift
-//  RandomApp
-//
-//  Created by asc on 2/28/20.
-//  Copyright © 2020 SFO Museum. All rights reserved.
-//
-
 import UIKit
+import WebKit
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, WKUIDelegate {
+        
+    @IBOutlet var webView: WKWebView!
+    
+    let wk_pool = WKProcessPool()
+    let wk_store = WKWebsiteDataStore.default()
+    
+    let random_url = "https://millsfield.sfomuseum.org/random/auto"
+        
+    override func loadView() {
+        let webConfiguration = WKWebViewConfiguration()
+        webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        webView.uiDelegate = self
+        view = webView
+    }
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let myURL = URL(string:random_url)
+        let myRequest = URLRequest(url: myURL!)
+        webView.load(myRequest)
     }
-
-
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 }
+
 
